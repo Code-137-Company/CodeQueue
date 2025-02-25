@@ -2,6 +2,7 @@
 using Code137.JsonDb;
 using CodeQueue.Domain.Entities;
 using CodeQueue.Service.Services.QueueConsumerService;
+using CodeQueue.Service.Services.SocketService;
 
 namespace CodeQueue
 {
@@ -33,6 +34,7 @@ namespace CodeQueue
         private static void ConfigureServices(this IServiceCollection service)
         {
             service.AddSingleton<QueueConsumerService>();
+            service.AddSingleton<SocketServer>();
         }
     }
 }

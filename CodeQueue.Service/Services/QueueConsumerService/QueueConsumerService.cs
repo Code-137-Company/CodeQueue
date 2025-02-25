@@ -2,6 +2,7 @@
 using CodeQueue.Domain.Entities;
 using CodeQueue.Domain.Models;
 using CodeQueue.Service.Common;
+using CodeQueue.Service.Services.SocketService;
 using Newtonsoft.Json;
 
 namespace CodeQueue.Service.Services.QueueConsumerService
@@ -9,20 +10,19 @@ namespace CodeQueue.Service.Services.QueueConsumerService
     public class QueueConsumerService
     {
         private readonly JsonDb _jsonDb;
+        private readonly SocketServer _socket;
 
-        public QueueConsumerService(JsonDb jsonDb)
+        public QueueConsumerService(JsonDb jsonDb, SocketServer socket)
         {
             _jsonDb = jsonDb;
+            _socket = socket;
         }
 
         public void Start()
         {
             CreateQueues();
 
-            while (true)
-            {
-
-            }
+            Task.Run(StartLoopAsync).Wait();
         }
 
         private void CreateQueues()
@@ -58,6 +58,32 @@ namespace CodeQueue.Service.Services.QueueConsumerService
 
             foreach (var queueDb in queuesDb)
                 _jsonDb.Delete<Queue>(queueDb.Id, out string deleteMessage);
+        }
+
+        private async Task StartLoopAsync()
+        {
+            while (true)
+            {
+                var queues = _jsonDb.GetAll<Queue>();
+
+                foreach (var queue in queues)
+                {
+                    if (!queue.Messages.Any() || queue.Consumers < queue.Messages.Count(x => x.InProcessing) || !queue.Messages.Any(x => !x.InProcessing))
+                        continue;
+
+                    var message = queue.Messages.FirstOrDefault(x => !x.InProcessing);
+
+                    /*
+                     * Send Socket
+                     */
+
+                    message.InProcessing = true;
+
+                    _jsonDb.Update(queue, out string updateMessage);
+                }
+
+                await _socket.AwaitReceive();
+            }
         }
     }
 }
