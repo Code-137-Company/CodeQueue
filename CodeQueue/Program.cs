@@ -1,7 +1,7 @@
-using Code137.JsonDb;
-using Code137.JsonDb.Models;
+using CodeQueue.Domain.Models;
+using CodeQueue.Service.Common;
 using CodeQueue.Service.Middleware;
-using CodeQueue.Service.Services.Messages.PublishMessageService;
+using Newtonsoft.Json;
 
 namespace CodeQueue;
 public static class Program
@@ -13,10 +13,9 @@ public static class Program
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
 
-        builder.ConfigureMediatR();
+        builder.ConfigureProject();
 
-        builder.Services.ConfigureDatabase();
-        builder.Services.ConfigureServices();
+        CreateFiles();
 
         var app = builder.Build();
 
@@ -36,26 +35,33 @@ public static class Program
         app.Run();
     }
 
-    private static void ConfigureMediatR(this WebApplicationBuilder builder)
+    private static void CreateFiles()
     {
-        var assemblyServices = AppDomain.CurrentDomain.Load("CodeQueue.Service");
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyServices));
-    }
+        var directory = CommonPath.GetConfigurationDirectory();
+        var fullpath = CommonPath.GetFullPathConfiguration();
 
-    private static void ConfigureDatabase(this IServiceCollection service)
-    {
-        service.AddSingleton(_ =>
+        bool newConfiguration = false;
+
+        if (!Directory.Exists(directory))
         {
-            var jsonDb = new JsonDb(new DatabaseOptions("CodeQueue", path: AppDomain.CurrentDomain.BaseDirectory));
+            Directory.CreateDirectory(directory);
+            newConfiguration = true;
+        }
 
-            //jsonDb.AddEntity<>();
+        if (!File.Exists(fullpath))
+        {
+            File.Create(fullpath).Close();
+            newConfiguration = true;
+        }
 
-            return jsonDb;
-        });
-    }
+        if (newConfiguration)
+        {
+            var configuration = new ConfigurationModel()
+            {
+                Token = "You Token Here"
+            };
 
-    private static void ConfigureServices(this IServiceCollection service)
-    {
-        //service.AddTransient<PublishMessageRequest>();
+            File.WriteAllText(fullpath, JsonConvert.SerializeObject(configuration));
+        }
     }
 }

@@ -11,14 +11,7 @@ namespace CodeQueue.Service.Services.ConfigurationService
 
         public async Task<ConfigurationModel> Handle(ConfigurationRequest request, CancellationToken cancellationToken = default)
         {
-            var directory = CommonPath.GetConfigurationDirectory();
-            var fullpath = Path.Combine(directory, $"{_configurationFile}.json");
-
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            if (!File.Exists(fullpath))
-                File.Create(fullpath).Close();
+            var fullpath = CommonPath.GetFullPathConfiguration();
 
             var content = File.ReadAllText(fullpath);
 

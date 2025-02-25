@@ -17,10 +17,4 @@
     <ProjectReference Include="..\CodeQueue.Service\CodeQueue.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="Configuration\Configuration.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

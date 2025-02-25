@@ -13,7 +13,7 @@ namespace CodeQueue.Controllers
         public MessageController(JsonDb jsonDb, IMediator mediator) : base(jsonDb, mediator) { }
 
         [HttpPost("Publish")]
-        public async Task<DefaultResponse> PublishMessageAsync([FromBody] PublishMessageRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> PublishMessageAsync([FromBody] PublishMessageRequest request, CancellationToken cancellationToken)
         {
             return await SendAsync(request, cancellationToken);
         }

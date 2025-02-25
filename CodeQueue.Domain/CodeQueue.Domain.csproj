@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Code137.JsonDb" Version="1.0.1" />
+  </ItemGroup>
+
 </Project>

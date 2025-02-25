@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeQueue.Service", "CodeQu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeQueue.Domain", "CodeQueue.Domain\CodeQueue.Domain.csproj", "{CBA054BA-B969-499D-9177-2D7EFCD819B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeQueue.Database", "CodeQueue.Database\CodeQueue.Database.csproj", "{216D99F0-8F77-47C7-9FD0-4CCD16E348EE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{CBA054BA-B969-499D-9177-2D7EFCD819B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBA054BA-B969-499D-9177-2D7EFCD819B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBA054BA-B969-499D-9177-2D7EFCD819B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{216D99F0-8F77-47C7-9FD0-4CCD16E348EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{216D99F0-8F77-47C7-9FD0-4CCD16E348EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{216D99F0-8F77-47C7-9FD0-4CCD16E348EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{216D99F0-8F77-47C7-9FD0-4CCD16E348EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
