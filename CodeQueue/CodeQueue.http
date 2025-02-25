@@ -1,0 +1,6 @@
+@CodeQueue_HostAddress = http://localhost:5195
+
+GET {{CodeQueue_HostAddress}}/Message/Publish
+Accept: application/json
+
+###
