@@ -17,12 +17,19 @@ namespace CodeQueue.Service.Services.Messages.PublishMessageService
 
         public async Task<DefaultResponse> Handle(PublishMessageRequest request, CancellationToken cancellationToken)
         {
-            var message = new Message()
-            {
-                Payload = request.Payload,
-            };
+            var queue = _jsonDb.GetOne<Queue>(x => x.Name == request.QueueName);
 
-            var inserted = _jsonDb.Insert(message, out string result);
+            if (queue == null)
+                return new DefaultResponse(
+                    HttpStatusCode.BadRequest,
+                    "Queue Not Found");
+
+            queue.Messages.Add(new Message()
+            {
+                Payload = request.Message
+            });
+
+            var inserted = _jsonDb.Update(queue, out string message);
 
             if (!inserted)
                 return new DefaultResponse(

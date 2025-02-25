@@ -1,19 +1,12 @@
 ﻿using Code137.JsonDb.Models;
 using Code137.JsonDb;
 using CodeQueue.Domain.Entities;
+using CodeQueue.Service.Services.QueueConsumerService;
 
 namespace CodeQueue
 {
-    public static class Configure
+    public partial class Program
     {
-        public static void ConfigureProject(this WebApplicationBuilder builder)
-        {
-            builder.ConfigureMediatR();
-
-            builder.Services.ConfigureDatabase();
-            builder.Services.ConfigureServices();
-        }
-
         private static void ConfigureMediatR(this WebApplicationBuilder builder)
         {
             var assemblyServices = AppDomain.CurrentDomain.Load("CodeQueue.Service");
@@ -31,7 +24,7 @@ namespace CodeQueue
 
                 var jsonDb = new JsonDb(new DatabaseOptions("CodeQueue", path: directory));
 
-                jsonDb.AddEntity<Message>();
+                jsonDb.AddEntity<Queue>();
 
                 return jsonDb;
             });
@@ -39,7 +32,7 @@ namespace CodeQueue
 
         private static void ConfigureServices(this IServiceCollection service)
         {
-            //service.AddTransient<PublishMessageRequest>();
+            service.AddSingleton<QueueConsumerService>();
         }
     }
 }

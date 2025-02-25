@@ -1,10 +1,7 @@
-using CodeQueue.Domain.Models;
-using CodeQueue.Service.Common;
 using CodeQueue.Service.Middleware;
-using Newtonsoft.Json;
 
 namespace CodeQueue;
-public static class Program
+public static partial class Program
 {
     public static void Main(string[] args)
     {
@@ -13,11 +10,14 @@ public static class Program
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
 
-        builder.ConfigureProject();
+        builder.ConfigureMediatR();
 
-        CreateFiles();
+        builder.Services.ConfigureDatabase();
+        builder.Services.ConfigureServices();
 
         var app = builder.Build();
+
+        app.Services.StartProject();
 
         if (app.Environment.IsDevelopment())
         {
@@ -33,35 +33,5 @@ public static class Program
         app.MapControllers();
 
         app.Run();
-    }
-
-    private static void CreateFiles()
-    {
-        var directory = CommonPath.GetConfigurationDirectory();
-        var fullpath = CommonPath.GetFullPathConfiguration();
-
-        bool newConfiguration = false;
-
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-            newConfiguration = true;
-        }
-
-        if (!File.Exists(fullpath))
-        {
-            File.Create(fullpath).Close();
-            newConfiguration = true;
-        }
-
-        if (newConfiguration)
-        {
-            var configuration = new ConfigurationModel()
-            {
-                Token = "You Token Here"
-            };
-
-            File.WriteAllText(fullpath, JsonConvert.SerializeObject(configuration));
-        }
     }
 }

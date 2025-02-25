@@ -4,8 +4,8 @@ namespace CodeQueue.Service.Common
 {
     public class CommonPath
     {
-        private static readonly string _filename = "Configuration";
-        private static readonly string _extension = "json";
+        private static readonly string _configurationFilename = "Configuration.json";
+        private static readonly string _configurationQueues = "Queues.json";
 
         public static string GetConfigurationDirectory()
         {
@@ -14,6 +14,8 @@ namespace CodeQueue.Service.Common
             return directory;
         }
 
-        public static string GetFullPathConfiguration() => Path.Combine(GetConfigurationDirectory(), $"{_filename}.{_extension}");
+        public static string GetFullPathConfiguration() => Path.Combine(GetConfigurationDirectory(), $"{_configurationFilename}");
+
+        public static string GetFullPathQueues() => Path.Combine(GetConfigurationDirectory(), $"{_configurationQueues}");
     }
 }

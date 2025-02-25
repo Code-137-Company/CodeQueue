@@ -5,6 +5,7 @@ namespace CodeQueue.Service.Services.Messages.PublishMessageService
 {
     public class PublishMessageRequest : IRequest<DefaultResponse>
     {
-        public string Payload { get; set; }
+        public string QueueName { get; set; }
+        public string Message { get; set; }
     }
 }
